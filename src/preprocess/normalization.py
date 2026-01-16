@@ -2,6 +2,8 @@ import nibabel as nib
 import glob
 import os
 
+import rescale
+
 curr_path = os.path.abspath(__file__)
 
 root_path = os.path.abspath(os.path.join(curr_path, "..", "..", ".."))
@@ -36,6 +38,10 @@ def normalize_file(input_path, output_path):
 
     data = (data - min_val) / (max_val - min_val + 1e-8)
 
+    data = rescale.rescaled_data(data)
+
+    print(data.shape)
+
     nifti_data = nib.Nifti1Image(data, img.affine, img.header)
     nib.save(nifti_data, os.path.join(output_path, basename))
 
@@ -46,3 +52,5 @@ def normalize_train():
 def normalize_test():
     name = "test"
     normalize_data(name)
+
+normalize_train()
