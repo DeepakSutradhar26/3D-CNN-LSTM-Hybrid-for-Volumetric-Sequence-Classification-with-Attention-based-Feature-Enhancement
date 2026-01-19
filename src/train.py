@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 import config
 from models.CNN_LSTM import CNN_LSTM
+from architecture.cnn3 import CNNArchitecture
 from data_pipeline.data_loader import train_loader, val_loader
 
 def train_one_epoch(model, loader, optimizer, criterion):
@@ -59,7 +60,7 @@ def plot_accuracy_curve(train_loss, val_loss):
     plt.show()
 
 def main():
-    model = CNN_LSTM().to(config.DEVICE)
+    model = CNN_LSTM(CNNArchitecture).to(config.DEVICE)
     optimizer = Adam(model.parameters(), lr=config.LEARNING_RATE)
     criterion = nn.BCELoss()
 
