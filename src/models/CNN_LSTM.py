@@ -13,11 +13,8 @@ class CNN_LSTM(nn.Module):
             batch_first=True,
         )
 
-        self.final_layer = nn.Sequential(
-            nn.Linear(128, 1),
-            nn.Sigmoid(),
-        )
-
+        self.final_layer = nn.Linear(128, 1)
+        
     def forward(self, x):
         B, T, C, H, W, D = x.shape
 
