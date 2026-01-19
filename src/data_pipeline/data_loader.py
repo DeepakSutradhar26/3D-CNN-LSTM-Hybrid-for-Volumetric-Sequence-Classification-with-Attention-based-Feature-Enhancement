@@ -4,11 +4,11 @@ from sklearn.model_selection import train_test_split
 import config
 import os
 
-import data_dowload
+import data_pipeline.data_download as data_download
 
 pateints = []
 for label in ["HGG", "LGG"]:
-    data_path = os.path.join(data_dowload.DATA_PATH, label)
+    data_path = os.path.join(data_download.DATA_PATH, label)
     for p in os.listdir(data_path):
         pateints.append((label, p))
 
