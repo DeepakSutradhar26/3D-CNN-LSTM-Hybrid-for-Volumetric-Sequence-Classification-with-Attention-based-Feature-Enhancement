@@ -10,33 +10,33 @@ from architecture.cnn3 import CNNArchitecture
 from data_pipeline.data_loader import train_loader, val_loader
 
 def create_one_batch(x, index):
-    batch = []
-    for i in range(x.shape[0]):
-        batch.append(x[i][index])
-    return torch.tensor(batch)
+    batch = x[:, index]
+    return batch
 
 def train_one_epoch(model, loader, optimizer, criterion):
     model.train()
     epoch_loss = 0.0
 
+    num_steps = 0
     for x,y in tqdm(loader, desc="Training", leave=False):
         x = x.to(config.DEVICE)
         y = y.to(config.DEVICE)
 
+        optimizer.zero_grad()
+
         for i in range(x.shape[1]):
             batch = create_one_batch(x, i)
+            num_steps += 1
 
-            print(batch.shape)
-
-            optimizer.zero_grad()
             preds = model(batch)
             loss = criterion(preds, y)
             loss.backward()
-            optimizer.step()
 
             epoch_loss += loss.item()
 
-    return epoch_loss/(loader.shape[0] * loader.shape[1])
+        optimizer.step()
+
+    return epoch_loss/(num_steps)
 
 def validate(model, loader, criterion):
     model.eval()
@@ -44,24 +44,32 @@ def validate(model, loader, criterion):
     correct = 0
     total = 0
 
+    num_steps = 0
     with torch.no_grad():
         for x,y in tqdm(loader, desc="Validation", leave=False):
             x = x.to(config.DEVICE) #[8, 5, 1, 128, 128, 32]
             y = y.to(config.DEVICE) #[8, 1]
 
+            preds_over_time = []
+
             for i in range(x.shape[1]):
                 batch = create_one_batch(x, i)
+                num_steps += 1
 
                 preds = model(batch)
+                preds_over_time.append(preds)
+
                 loss = criterion(preds, y)
                 epoch_loss += loss.item()
 
-                preds = (preds > 0.5).float()
-                correct += (preds == y).sum().item()
-                total += y.numel()
+            preds = torch.mean(torch.stack(preds_over_time), dim=0)
+            preds = (preds > 0.5).float()
+            
+            correct += (preds == y).sum().item()
+            total += y.size(0)
     
     acc = correct/total if total > 0 else 0
-    return epoch_loss/(loader.shape[0] * loader.shape[1]), acc
+    return epoch_loss/(num_steps), acc
 
 def plot_accuracy_curve(train_loss, val_loss):
     plt.figure()
