@@ -28,7 +28,7 @@ class MRIDataset(Dataset):
         x = torch.stack(volumes) #(4, D, H, W)
         x = x.unsqueeze(1) # (4, 1, D, H, W)
 
-        label = 1 if label_name == "HGG" else label = 0
+        label = 1 if label_name == "HGG" else 0
         y = torch.tensor(label).unsqueeze(0)
 
         return x, y
