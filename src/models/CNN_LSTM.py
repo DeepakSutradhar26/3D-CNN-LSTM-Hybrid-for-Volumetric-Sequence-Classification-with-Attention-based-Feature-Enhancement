@@ -3,7 +3,7 @@ import torch.nn as nn
 class CNN_LSTM(nn.Module):
     def __init__(self, cnn : nn.Module):
         super().__init__()
-        self.cnn = cnn
+        self.cnn = cnn()
 
         self.lstm = nn.LSTM(
             input_size=128,
@@ -18,7 +18,16 @@ class CNN_LSTM(nn.Module):
         )
 
     def forward(self, x):
-        x = self.cnn(x)
-        x, _ = self.lstm(x)
-        x = self.final_layer(x)
+        B, T, C, H, W, D = x.shape
+
+        x = x.view(B * T, C, H, W, D) 
+        x = self.cnn(x) # (B*T, 128)
+
+        x = x.view(B, T, 128)
+        x, _ = self.lstm(x) # (B, T, 128)
+
+        x = x[:, -1, :] # (B, 128)
+        x = self.final_layer(x) #(B, 1)
+
         return x
+

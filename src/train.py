@@ -9,10 +9,6 @@ from models.CNN_LSTM import CNN_LSTM
 from architecture.cnn3 import CNNArchitecture
 from data_pipeline.data_loader import train_loader, val_loader
 
-def create_one_batch(x, index):
-    batch = x[:, index]
-    return batch
-
 def train_one_epoch(model, loader, optimizer, criterion):
     model.train()
     epoch_loss = 0.0
@@ -24,15 +20,13 @@ def train_one_epoch(model, loader, optimizer, criterion):
 
         optimizer.zero_grad()
 
-        for i in range(x.shape[1]):
-            batch = create_one_batch(x, i)
-            num_steps += 1
+        num_steps += 1
 
-            preds = model(batch)
-            loss = criterion(preds, y)
-            loss.backward()
+        preds = model(x)
+        loss = criterion(preds, y)
+        loss.backward()
 
-            epoch_loss += loss.item()
+        epoch_loss += loss.item()
 
         optimizer.step()
 
@@ -52,17 +46,11 @@ def validate(model, loader, criterion):
 
             preds_over_time = []
 
-            for i in range(x.shape[1]):
-                batch = create_one_batch(x, i)
-                num_steps += 1
+            preds = model(x)
+            preds_over_time.append(preds)
 
-                print(batch.shape)
-
-                preds = model(batch)
-                preds_over_time.append(preds)
-
-                loss = criterion(preds, y)
-                epoch_loss += loss.item()
+            loss = criterion(preds, y)
+            epoch_loss += loss.item()
 
             preds = torch.mean(torch.stack(preds_over_time), dim=0)
             preds = (preds > 0.5).float()
