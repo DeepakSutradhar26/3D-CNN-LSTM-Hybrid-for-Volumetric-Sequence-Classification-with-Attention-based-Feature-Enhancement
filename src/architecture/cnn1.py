@@ -24,9 +24,6 @@ class CNNArchitecture(nn.Module):
             nn.Linear(self.flat_dim, self.cnn_input_size),
             nn.BatchNorm1d(self.cnn_input_size),
             nn.ReLU(),
-            nn.Dropout(dropout_rate),
-            nn.Linear(self.cnn_input_size, self.cnn_input_size),
-            nn.ReLU(),
         )
 
     
