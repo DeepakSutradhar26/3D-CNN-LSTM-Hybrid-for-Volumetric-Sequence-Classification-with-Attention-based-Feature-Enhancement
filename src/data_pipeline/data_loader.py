@@ -8,7 +8,7 @@ import data_pipeline.data_download as data_download
 
 pateints = []
 for label in ["HGG", "LGG"]:
-    data_path = os.path.join(data_download.DATA_PATH, label)
+    data_path = os.path.join(data_download.DATA_FOLDER_PATH, label)
     for p in os.listdir(data_path):
         pateints.append((label, p))
 
