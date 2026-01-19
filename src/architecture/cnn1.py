@@ -4,6 +4,7 @@ import torch.nn as nn
 class CNNArchitecture(nn.Module):
     def __init__(self, input_shape=(1, 128, 128, 64), dropout_rate=0.3):
         super().__init__()
+        self.dropout_rate = dropout_rate
 
         self.conv_blocks = nn.Sequential(
             self.conv_block(1, 8),
@@ -32,6 +33,7 @@ class CNNArchitecture(nn.Module):
             nn.Conv3d(in_channels, out_channels, kernel_size=3, padding=1),
             nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True),
+            nn.Dropout3d(self.dropout_rate),
             nn.MaxPool3d(kernel_size=2, stride=2),
         )
     

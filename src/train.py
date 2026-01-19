@@ -42,8 +42,6 @@ def validate(model, loader, criterion):
             x = x.to(config.DEVICE) #[8, 4, 1, 128, 128, 32]
             y = y.to(config.DEVICE) #[8, 1]
 
-            print(x.shape)
-
             preds_over_time = []
 
             preds = model(x)
