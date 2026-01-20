@@ -48,5 +48,5 @@ class CNNArchitecture(nn.Module):
     def forward(self, x):
         x = self.conv_blocks(x)
         x = self.final_layer(x) 
-        x = x.flatten(dim=1)
+        x = x.flatten(1)
         return x 
