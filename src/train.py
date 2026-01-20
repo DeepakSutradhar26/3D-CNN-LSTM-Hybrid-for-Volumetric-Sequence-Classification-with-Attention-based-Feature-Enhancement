@@ -161,8 +161,8 @@ def main():
     # train_cnn_model(model1, "CNN1", all_train_losses, all_val_losses, all_acc)
     model2 = CNN_LSTM(CNN2).to(config.DEVICE)
     train_cnn_model(model2, "CNN2", all_train_losses, all_val_losses, all_acc)
-    model3 = CNN_LSTM(CNN3).to(config.DEVICE)
-    train_cnn_model(model3, "CNN3", all_train_losses, all_val_losses, all_acc)
+    # model3 = CNN_LSTM(CNN3).to(config.DEVICE)
+    # train_cnn_model(model3, "CNN3", all_train_losses, all_val_losses, all_acc)
 
     plot_all_loss(all_train_losses, all_val_losses)
     plot_all_accuracy(all_acc)
