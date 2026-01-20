@@ -159,5 +159,5 @@ CNN-3 | Best overall performance with SE attention |
 
 ---
 
-**Conclusion:**  
+## Conclusion:  
 The **SE-enhanced CNN (CNN-3)** provides the best trade-off between learning capacity and generalization, making it the preferred spatial feature extractor for the CNN–LSTM pipeline.
