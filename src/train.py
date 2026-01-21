@@ -117,13 +117,13 @@ def main():
     # op1 = train_cnn_model(model1, "CNN1", all_train_losses, all_val_losses, all_acc)
     # reset_torch(model1, op1)
 
-    model2 = CNN_LSTM(CNN2).to(config.DEVICE)
-    op2 = train_cnn_model(model2, "CNN2", all_train_losses, all_val_losses, all_acc)
-    reset_torch(model2, op2)
+    # model2 = CNN_LSTM(CNN2).to(config.DEVICE)
+    # op2 = train_cnn_model(model2, "CNN2", all_train_losses, all_val_losses, all_acc)
+    # reset_torch(model2, op2)
 
-    # model3 = CNN_LSTM(CNN3).to(config.DEVICE)
-    # op3 = train_cnn_model(model3, "CNN3", all_train_losses, all_val_losses, all_acc)
-    # reset_torch(model3, op3)
+    model3 = CNN_LSTM(CNN3).to(config.DEVICE)
+    op3 = train_cnn_model(model3, "CNN3", all_train_losses, all_val_losses, all_acc)
+    reset_torch(model3, op3)
 
     plot_all_loss(all_train_losses, all_val_losses)
     plot_all_accuracy(all_acc)
